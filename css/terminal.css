@@ -1,0 +1,17 @@
+#console, .terminal, .cmd {
+	color: #000000; /* black text */
+	text-align: left;
+	background-color: #FFFFFF; /*white background */  
+	font-family: "Lucida Console", Monaco, monospace;
+	font-size: 1em !important;
+}
+
+#console {
+	padding: 10px;
+        padding-bottom: 1px;
+	width: 100%;
+}
+
+.terminal div{
+    margin-bottom: 8px;    
+}

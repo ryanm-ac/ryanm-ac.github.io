@@ -1,0 +1,26 @@
+#red-terminal {
+	color: #CC3333; /*red text for dark backgrounds*/
+}
+
+/* override bootstrap CSS */
+a, h1 a:link, a:active, a:hover, a:visited { 
+	color: #993333; /*red text for light backgrounds*/
+}
+.navbar-toggle:hover .icon-bar { background-color: #CC3333; }
+
+h1 a, h1 a:link, h1 a:active, h1 a:hover, h1 a:visited {
+	text-decoration: none;
+}
+
+#profile-picture {
+	max-width: 200px;
+}
+
+h1,h2,h3,h4,h5,h6 {
+	font-family: 'Inconsolata', monospace;
+}
+
+.post-date {
+	font-weight: bold;
+	margin-bottom: 10px;
+}
