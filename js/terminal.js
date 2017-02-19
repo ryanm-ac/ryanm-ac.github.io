@@ -4,8 +4,47 @@ $.terminal.defaults.strings.wrongArity = "Command '%s' expects %s argument(s)";
 
 var greeting = "Welcome! You are logged in as a guest.\nType [[b;#993333;]help] for a list of available commands.";
 
-var remoteInterpreter = "https://xlxjlcwmx6.execute-api.us-east-1.amazonaws.com/prod/interpretCommand"
+var aws = "https://xlxjlcwmx6.execute-api.us-east-1.amazonaws.com/prod/interpretCommand";
+var gcp = "https://us-central1-ryanmac-159023.cloudfunctions.net/interpretCommand";
+
+//Default to AWS
+var cloud = "aws";
+var remoteInterpreter = aws;
+
+function setCloud(value) {
+	cloud = value;
+	if (typeof(Storage) !== "undefined") {
+		//store for future sessions if supported
+	    localStorage.setItem("cloud", value);
+	}
+	if (value == 'gcp')
+		remoteInterpreter = gcp;
+	else
+		remoteInterpreter = aws;
+}
+
+function getCloud() {
+	if (typeof(Storage) !== "undefined") {
+		//retrieve for local storage first if supported
+	    cloud = localStorage.getItem("cloud");
+	}
+	if (cloud == 'gcp')
+		remoteInterpreter = gcp;
+	else
+		remoteInterpreter = aws;
+}
+
 var localInterpreter = {
+	cloud: function(arg1) {
+		if (arg1 == 'aws') setCloud('aws');
+		else if (arg1 == 'gcp') setCloud('gcp');
+		if (cloud == 'gcp')
+			this.echo('You are currently connected to Google Cloud Platform ' +
+				      '\nType [[b;#993333;]cloud aws] to switch to Amazon Web Services');
+		else
+			this.echo('You are currently connected to Amazon Web Services ' +
+				      '\nType [[b;#993333;]cloud gcp] to switch to Google Cloud Platform');
+	},
 	echo: function(arg1) {
 		this.echo(arg1);
 	},
@@ -15,6 +54,7 @@ var localInterpreter = {
 	help: function() {
 		this.echo("Available commands are:" +
 					"\n[[b;#993333;]clear]     clear the terminal" +
+					"\n[[b;#993333;]cloud]     display/switch cloud services provider" +
 					"\n[[b;#993333;]email]     send an email to the site owner" +
 					"\n[[b;#993333;]hello]     print the login greeting message" +
 					"\n[[b;#993333;]help]      print this message" +
@@ -77,6 +117,7 @@ var localInterpreter = {
 };
 
 jQuery(document).ready(function($) {
+	getCloud();
 	$('#console').terminal(
 		localInterpreter, 	
 		{
