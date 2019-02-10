@@ -6,6 +6,7 @@ var greeting = "Welcome! You are logged in as a guest.\nType [[b;#993333;]help] 
 
 var aws = "https://xlxjlcwmx6.execute-api.us-east-1.amazonaws.com/prod/interpretCommand";
 var gcp = "https://us-central1-ryanmac-159023.cloudfunctions.net/interpretCommand";
+var azure = "https://ryanmac.azurewebsites.net/api/interpretCommand?code=Z02MHfDQpdakcZt0SUWD9qCkoc0x8TFiHaHJ0FGkZs/yDaY8SxjzYw==";
 
 //Default to AWS
 var cloud = "aws";
@@ -19,6 +20,8 @@ function setCloud(value) {
 	}
 	if (value == 'gcp')
 		remoteInterpreter = gcp;
+	else if (value == 'azure')
+		remoteInterpreter = azure;
 	else
 		remoteInterpreter = aws;
 }
@@ -30,6 +33,8 @@ function getCloud() {
 	}
 	if (cloud == 'gcp')
 		remoteInterpreter = gcp;
+	else if (cloud == 'azure')
+		remoteInterpreter = azure;
 	else
 		remoteInterpreter = aws;
 }
@@ -38,12 +43,19 @@ var localInterpreter = {
 	cloud: function(arg1) {
 		if (arg1 == 'aws') setCloud('aws');
 		else if (arg1 == 'gcp') setCloud('gcp');
+		else if (arg1 == 'azure') setCloud('azure');
 		if (cloud == 'gcp')
 			this.echo('You are currently connected to Google Cloud Platform ' +
-				      '\nType [[b;#993333;]cloud aws] to switch to Amazon Web Services');
+					  '\nType [[b;#993333;]cloud aws] to switch to Amazon Web Services ' +
+					  '\nType [[b;#993333;]cloud azure] to switch to Microsoft Azure');
+		else if (cloud == 'azure')
+			this.echo('You are currently connected to Microsoft Azure ' +
+					  '\nType [[b;#993333;]cloud aws] to switch to Amazon Web Services ' +
+					  '\nType [[b;#993333;]cloud gcp] to switch to Google Cloud Platform');	  
 		else
 			this.echo('You are currently connected to Amazon Web Services ' +
-				      '\nType [[b;#993333;]cloud gcp] to switch to Google Cloud Platform');
+					  '\nType [[b;#993333;]cloud azure] to switch to Microsoft Azure ' +
+					  '\nType [[b;#993333;]cloud gcp] to switch to Google Cloud Platform');
 	},
 	echo: function(arg1) {
 		this.echo(arg1);
